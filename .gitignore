@@ -5,6 +5,5 @@ env/
 venv/
 .env
 .vscode/
-*.csv
-*.json
+
 
