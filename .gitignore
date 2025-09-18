@@ -1,0 +1,10 @@
+datasets/
+pgdata/
+__pycache__/
+env/
+venv/
+.env
+.vscode/
+*.csv
+*.json
+
