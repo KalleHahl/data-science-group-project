@@ -1,6 +1,7 @@
 # 🚀
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 # 🐼
 import pandas as pd
@@ -33,6 +34,8 @@ stemmer = PorterStemmer()
 
 templates = Jinja2Templates(directory="src/backend/templates")
 
+# Mount static file for CSS 
+app.mount("/static", StaticFiles(directory="src/backend/static"), name="static")
 
 @app.get("/")
 async def main_route(request: Request):
