@@ -1,5 +1,6 @@
 # 🚀
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
 
 # 🐼
 import pandas as pd
@@ -30,10 +31,13 @@ wines_df = pd.read_csv(WINES_PATH)
 
 stemmer = PorterStemmer()
 
+templates = Jinja2Templates(directory="src/backend/templates")
+
 
 @app.get("/")
-def main_route() -> dict[str, str]:
-    return {"message": "Hello Wine Enjoyer =)"}
+async def main_route(request: Request):
+    return templates.TemplateResponse(request=request,name="index.html")
+
 
 @app.get("/by_description")
 def by_description(description: str) -> dict[str, list[dict[str,str]]]:
