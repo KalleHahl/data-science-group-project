@@ -1,11 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="src/style.css">
+    <meta charset="utf-8">
+    <title>Wine Recommender</title>
   </head>
   <body>
-    <h1>Hi friend, try edit me!</h1>
+    <h1>Find similar wines by description</h1>
+
+    <form id="search-form">
+      <label for="q">Describe what you like:</label>
+      <input id="q" name="q" type="text" placeholder="e.g. lime zest, green apple, floral" />
+      <button type="submit">Search</button>
+    </form>
+
+    <div id="status"></div>
+    <div id="results"></div>
+
+    <script>
+      const form = document.getElementById('search-form');
+      const input = document.getElementById('q');
+      const statusEl = document.getElementById('status');
+      const resultsEl = document.getElementById('results');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const q = input.value.trim();
+        if (!q) return;
+
+        statusEl.textContent = 'Searching...';
+        resultsEl.innerHTML = '';
+
+        try {
+          const params = new URLSearchParams({ description: q, k: '5' });
+          const res = await fetch('/by_description?' + params.toString(), {
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error('Server error: ' + text);
+          }
+
+          const data = await res.json();
+          renderResults(data.results || []);
+          statusEl.textContent = data.results && data.results.length ? '' : 'No results.';
+        } catch (err) {
+          statusEl.textContent = 'Error: ' + err.message;
+        }
+      });
+
+      function renderResults(items) {
+        items.forEach((it) => {
+          const card = document.createElement('div');
+          const h3 = document.createElement('h3');
+          const p = document.createElement('p');
+          const small = document.createElement('small');
+
+          h3.textContent = it.title || '(untitled)';
+          p.textContent = it.description || '';
+          small.textContent = 'Rating: ' + (it.rating_score ?? '');
+
+          card.appendChild(h3);
+          card.appendChild(p);
+          card.appendChild(small);
+
+          card.style.border = '1px solid #ccc';
+          card.style.padding = '8px';
+          card.style.margin = '8px 0';
+
+          resultsEl.appendChild(card);
+        });
+      }
+    </script>
   </body>
 </html>
