@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -13,12 +13,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-
-ENV POSTGRES_HOST=db
-ENV POSTGRES_PORT=5432
-ENV POSTGRES_DB=wine_db
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=example
 
 EXPOSE 8000
 
