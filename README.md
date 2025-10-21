@@ -1,6 +1,6 @@
 # 🍷 Pocket Sommelier – Wine Recommender
 
-**Pocket Sommelier** is a wine recommendation API built with **FastAPI**.  
+**Pocket Sommelier** is a wine recommendation web app built with **FastAPI**.  
 It uses **TF-IDF vectorization** of wine descriptions to suggest similar wines based on text similarity.  
 All model artifacts are precomputed offline and loaded at runtime for fast responses.
 
@@ -33,8 +33,6 @@ All model artifacts are precomputed offline and loaded at runtime for fast respo
 ## 🐳 Quick Start (with Docker)
 
 > These instructions assume you have **Docker** and **docker-compose** installed.
-
-(prerequisite for now is to run data-cleaning/wine.ipynb in its entirety until you get to dumping the data)
 
 1. **Start the API container:**
    ```bash
