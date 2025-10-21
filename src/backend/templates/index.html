@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Wine Recommender</title>
+    <link rel="stylesheet" href="/static/index.css" />
+  </head>
+  <body class="page">
+    <h1 class="page__title">Find similar wines by description</h1>
+
+    <form id="search-form" class="search-form">
+      <div class="input-container">
+        <input
+          id="q"
+          name="description"
+          class="input"
+          type="text"
+          placeholder="Taste profile..."
+          required
+        />
+      </div>
+    </form>
+
+    <div id="status" class="status"></div>
+    <div id="results" class="results"></div>
+
+    <script>
+      const form = document.getElementById("search-form");
+      const input = document.getElementById("q");
+      const statusEl = document.getElementById("status");
+      const resultsEl = document.getElementById("results");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const q = input.value.trim();
+        if (!q) return;
+
+        statusEl.textContent = "Searching...";
+        resultsEl.innerHTML = "";
+
+        try {
+          const params = new URLSearchParams({ description: q, k: "5" });
+          const res = await fetch("/by_description?" + params.toString(), {
+            headers: { Accept: "application/json" },
+          });
+
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error("Server error: " + text);
+          }
+
+          const data = await res.json();
+          renderResults(data.results || []);
+          statusEl.textContent =
+            data.results && data.results.length ? "" : "No results.";
+        } catch (err) {
+          statusEl.textContent = "Error: " + err.message;
+        }
+      });
+
+      function renderResults(items) {
+        items.forEach((it) => {
+          const card = document.createElement("div");
+          card.className = "wine-card";
+          const card_inner = document.createElement("div");
+          card_inner.className = "wine-card-inner";
+          const card_front = document.createElement("div");
+          card_front.className = "wine-card-front";
+          const card_back = document.createElement("div");
+          card_back.className = "wine-card-back";
+          const h3 = document.createElement("h3");
+          h3.className = "wine-card__title";
+          h3.textContent = it.title || "(untitled)";
+
+          const p = document.createElement("p");
+          p.className = "wine-card__description";
+          p.textContent = it.description || "";
+
+          const small = document.createElement("small");
+          small.className = "wine-card__rating";
+          small.textContent = "Rating: " + (it.rating_score ?? "");
+          card_front.appendChild(h3);
+          card_back.appendChild(p);
+          card_back.appendChild(small);
+          card_inner.appendChild(card_front);
+          card_inner.appendChild(card_back);
+          card.appendChild(card_inner);
+
+          resultsEl.appendChild(card);
+        });
+      }
+    </script>
+  </body>
+</html>

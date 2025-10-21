@@ -1,5 +1,7 @@
 # 🚀
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 # 🐼
 import pandas as pd
@@ -30,10 +32,15 @@ wines_df = pd.read_csv(WINES_PATH)
 
 stemmer = PorterStemmer()
 
+templates = Jinja2Templates(directory="src/backend/templates")
+
+# Mount static file for CSS 
+app.mount("/static", StaticFiles(directory="src/backend/static"), name="static")
 
 @app.get("/")
-def main_route() -> dict[str, str]:
-    return {"message": "Hello Wine Enjoyer =)"}
+async def main_route(request: Request):
+    return templates.TemplateResponse(request=request,name="index.html")
+
 
 @app.get("/by_description")
 def by_description(description: str) -> dict[str, list[dict[str,str]]]:
@@ -48,6 +55,13 @@ def by_description(description: str) -> dict[str, list[dict[str,str]]]:
     sim_scores = list(enumerate(cosine_sim))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[0:5]
+
+    if sim_scores[0][1] == 0.0:
+        return {"results": [{
+            "title": f"Why would you want your wine to taste like '{description}'",
+            "description": "You'll have to make this one yourself...",
+            "rating_score": str(0),
+        }]}
     results = [
         {
             "title": str(wines_df.iloc[i]["title"]),
