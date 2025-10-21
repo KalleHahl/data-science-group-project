@@ -1,4 +1,4 @@
-# 🍷 Pocket Sommelier – Wine Recommender
+# [🍷 Pocket Sommelier – Wine Recommender](https://pocket-sommellier.onrender.com/)
 
 **Pocket Sommelier** is a wine recommendation web app built with **FastAPI**.  
 It uses **TF-IDF vectorization** of wine descriptions to suggest similar wines based on text similarity.  
