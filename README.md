@@ -1,11 +1,42 @@
-## data-science-group-project
+# 🍷 Pocket Sommelier – Wine Recommender
 
-## Wine recommender?
+**Pocket Sommelier** is a wine recommendation API built with **FastAPI**.  
+It uses **TF-IDF vectorization** of wine descriptions to suggest similar wines based on text similarity.  
+All model artifacts are precomputed offline and loaded at runtime for fast responses.
 
-# Requirements:
-    1. Docker
+## 🚀 Features
 
-# TO RUN locally:
-    1. Go to project directory
-    2. Run "docker-compose up -d"
-    3. Run "docker-compose logs api" to click on link to open browser OR go to "http://0.0.0.0:8000"
+- 🔍 **Content-based recommendations:** Uses TF-IDF + cosine similarity between wine descriptions  
+- ⚡ **FastAPI backend:** Simple REST API for querying wine similarities  
+- 🧠 **Precomputed artifacts:** TF-IDF vectorizer, sparse matrix, and metadata CSV built via Jupyter Notebook  
+- 🐳 **Dockerized environment:** One-command setup for local development  
+- 🧩 **Reproducible pipeline:** Notebook for preprocessing and asset generation
+
+## 🧰 Technical Overview
+
+1. **Data Preparation:**  
+   - Combine multiple open-source wine datasets  
+   - Clean and normalize descriptions  
+   - Build TF-IDF model and compute cosine similarity matrix  
+
+2. **Model Artifacts:**  
+   - `tfidf_vectorizer.joblib` – serialized scikit-learn vectorizer  
+   - `tfidf_matrix.npz` – sparse matrix representation  
+   - `wines_data.csv` – metadata (name, country, variety, etc.)
+
+3. **API Endpoints:**
+
+   | Endpoint | Method | Description |
+   |-----------|---------|-------------|
+   | `/by_description?description=...` | GET | Returns top 5 similar wines to input text |
+
+## 🐳 Quick Start (with Docker)
+
+> These instructions assume you have **Docker** and **docker-compose** installed.
+
+(prerequisite for now is to run data-cleaning/wine.ipynb in its entirety until you get to dumping the data)
+
+1. **Start the API container:**
+   ```bash
+   docker-compose up -d
+2. **Go to** http://0.0.0.0:8000/
