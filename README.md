@@ -38,3 +38,21 @@ All model artifacts are precomputed offline and loaded at runtime for fast respo
    ```bash
    docker-compose up -d
 2. **Go to** http://0.0.0.0:8000/
+
+## 🏆 Acknowledgements
+
+### 📊 Datasets
+The datasets used in this project are publicly available and were sourced from the following repositories:
+
+- [Wine Ratings Dataset](https://github.com/paiml/wine-ratings/blob/main/wine-ratings.csv)  
+- [21st Century Bordeaux Wine Dataset](https://www.kaggle.com/datasets/mexwell/21st-century-bordeaux-wine-dataset)  
+- [Wine Reviews Dataset](https://www.kaggle.com/datasets/zynicide/wine-reviews?select=winemag-data-130k-v2.csv)
+
+### 🎨 UI Styling
+Parts of the user interface make use of ready-made CSS templates from **[uiverse.io](https://uiverse.io/)**.  
+These templates are licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+- CSS by [0xNihilism (0xNihilist)](https://uiverse.io/profile/0xnihilism) — © 2025 0xNihilism  
+- CSS by [Vamsi Devendra Kumar](https://uiverse.io/profile/vamsidevendrakumar) — © 2025 Vamsi Devendra Kumar  
+
+Used with permission under the MIT License.
